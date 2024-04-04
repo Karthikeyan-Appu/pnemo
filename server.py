@@ -13,6 +13,10 @@ def preprocess_image(image):
     img = img.reshape(1, 300, 300, 3)
     return img
 
+@app.route("/")
+def index():
+    return "Welcome to the Pneumonia Detection API!"
+
 @app.route("/predict", methods=["POST"])
 def predict():
     if 'file' not in request.files:
