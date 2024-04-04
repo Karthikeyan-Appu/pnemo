@@ -20,7 +20,7 @@ def preprocess_image(image):
 def is_xray_image(image):
     # Load and resize the reference X-ray image for comparison
     reference_image = cv2.imread('reference_image.jpeg', cv2.IMREAD_GRAYSCALE)
-    reference_image = cv2.resize(reference_image, (image.shape[1], image.shape[0]))
+    reference_image = preprocess_image(reference_image)
 
     # Compute the structural similarity index (SSIM) between the images
     similarity_index = ssim(reference_image, image)
