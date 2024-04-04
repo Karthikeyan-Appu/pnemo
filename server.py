@@ -6,7 +6,7 @@ from skimage.metrics import structural_similarity as ssim
 app = Flask(__name__)
 model = load_model("trained.h5")
 classes = ['Normal', 'Pneumonia']
-reference_image = cv2.imread('reference_image.jpg')  # Load your reference image here
+reference_image = cv2.imread('reference_image.jpeg')  # Load your reference image here
 
 def preprocess_image(image):
     img = cv2.resize(image, (300, 300))
