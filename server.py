@@ -5,6 +5,7 @@ import numpy as np
 
 app = Flask(__name__)
 model = load_model("trained.h5")
+classes = ['Normal', 'Pneumonia']  # Define the classes for prediction
 
 def preprocess_image(image):
     img = cv2.resize(image, (300, 300))
@@ -14,12 +15,19 @@ def preprocess_image(image):
 
 @app.route("/predict", methods=["POST"])
 def predict():
-    if request.method == "POST":
-        file = request.files["file"]
-        image = cv2.imdecode(np.fromstring(file.read(), np.uint8), cv2.IMREAD_COLOR)
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part in the request'}), 400
+
+    file = request.files["file"]
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+
+    if file:
+        image = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_COLOR)
         preprocessed_image = preprocess_image(image)
-        prediction = model.predict(preprocessed_image)
-        return jsonify({"prediction": "Pneumonia" if prediction >= 0.5 else "Normal"})
+        prediction = model.predict(preprocessed_image)[0][0]
+        predicted_class = classes[int(prediction >= 0.5)]
+        return jsonify({"prediction": predicted_class})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
