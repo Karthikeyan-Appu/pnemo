@@ -12,14 +12,21 @@ model = load_model("trained.h5")
 classes = ['Normal', 'Pneumonia']  # Define the classes for prediction
 
 def preprocess_image(image):
+    # Resize the image to (300, 300)
     img = cv2.resize(image, (300, 300))
-    img = img / 255.0
-    img = img.reshape(1, 300, 300, 3)
-    return img
+
+    # Check if the image has 3 channels (RGB)
+    if len(img.shape) == 3 and img.shape[2] == 3:
+        img = img / 255.0  # Normalize pixel values
+        img = img.reshape(1, 300, 300, 3)  # Reshape to match model input shape
+        return img
+    else:
+        raise ValueError("Invalid image format or channel count. Please provide a valid RGB image.")
+
 
 def is_xray_image(image):
     # Load and resize the reference X-ray image for comparison
-    reference_image = cv2.imread('reference_image.jpeg', cv2.IMREAD_GRAYSCALE)
+    reference_image = cv2.imread('reference_image.jpeg', cv2.IMREAD_COLOR)
     reference_image = preprocess_image(reference_image)
 
     # Compute the structural similarity index (SSIM) between the images
