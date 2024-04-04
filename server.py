@@ -26,12 +26,11 @@ def predict():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
 
-    if file:
-        image = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_COLOR)
-        preprocessed_image = preprocess_image(image)
-        prediction = model.predict(preprocessed_image)[0][0]
-        predicted_class = classes[int(prediction >= 0.5)]
-        return jsonify({"prediction": predicted_class})
+    image = cv2.imdecode(np.frombuffer(file.read(), np.uint8), cv2.IMREAD_COLOR)
+    preprocessed_image = preprocess_image(image)
+    prediction = model.predict(preprocessed_image)[0][0]
+    predicted_class = classes[int(prediction >= 0.5)]
+    return jsonify({"prediction": predicted_class})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
