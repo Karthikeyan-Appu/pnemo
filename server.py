@@ -26,7 +26,7 @@ def compare_images(image):
         predicted_class = classes[int(prediction >= 0.5)]
         return predicted_class, ssi_index
     else:
-        return "Comparison Failed", ssi_index
+        return "Image is not recognized as Xray", ssi_index
 
 @app.route("/")
 def index():
