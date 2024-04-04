@@ -2,8 +2,11 @@ from flask import Flask, request, jsonify
 from tensorflow.keras.models import load_model
 import cv2
 import numpy as np
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, resources={r"/predict": {"origins": "https://pneumo-ai.vercel.app"}})
+
 model = load_model("trained.h5")
 classes = ['Normal', 'Pneumonia']  # Define the classes for prediction
 
