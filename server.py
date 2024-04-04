@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from flask import Flask, request, jsonify
 from skimage.metrics import structural_similarity as ssim
+from tensorflow.keras.models import load_model 
 
 app = Flask(__name__)
 model = load_model("trained.h5")
