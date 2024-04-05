@@ -5,7 +5,7 @@ import numpy as np
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app, resources={r"/predict": {"origins": "https://pneumo-ai-olcn.vercel.app/"}})
+CORS(app, resources={r"/predict": {"origins": "https://pneumo-ai.vercel.app"}})
 
 model = load_model("trained.h5")
 classes = ['Normal', 'Pneumonia']  # Define the classes for prediction
