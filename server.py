@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from flask_cors import CORS
 
-app = Flask(name)
+app = Flask(__name__)
 CORS(app, resources={r"/predict": {"origins": "https://pneumo-ai.vercel.app"}})
 
 model = load_model("trained.h5")
@@ -35,5 +35,5 @@ def predict():
     predicted_class = classes[int(prediction >= 0.5)]
     return jsonify({"prediction": predicted_class})
 
-if name == "main":
+if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
